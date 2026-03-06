@@ -46,6 +46,7 @@ async fn main() {
     loop {
         let output = match Command::new("coderabbit")
             .arg("--prompt-only")
+            .args(std::env::args().skip(1))
             .output()
             .await
         {
