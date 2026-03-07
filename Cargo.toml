@@ -1,6 +1,6 @@
 [package]
 name = "seher-cr"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 description = "A wrapper for the CodeRabbit CLI that automatically retries on rate limit errors"
 license = "MIT"
