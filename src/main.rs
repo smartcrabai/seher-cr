@@ -43,10 +43,11 @@ fn parse_rate_limit_wait(output: &str) -> Option<Duration> {
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
+    let args: Vec<String> = std::env::args().skip(1).collect();
     loop {
         let output = match Command::new("coderabbit")
             .arg("--prompt-only")
-            .args(std::env::args().skip(1))
+            .args(&args)
             .output()
             .await
         {
@@ -62,17 +63,13 @@ async fn main() {
         let combined = format!("{stdout}{stderr}");
 
         if let Some(wait_duration) = parse_rate_limit_wait(&combined) {
-            eprintln!(
-                "Rate limit reached. Waiting {} seconds before retry...",
-                wait_duration.as_secs()
-            );
             sleep(wait_duration).await;
             continue;
         }
 
         if !output.status.success() {
             eprintln!("{}", combined.trim());
-            std::process::exit(1);
+            std::process::exit(output.status.code().unwrap_or(1));
         }
 
         print!("{stdout}");
