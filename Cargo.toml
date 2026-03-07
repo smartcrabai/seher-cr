@@ -4,6 +4,7 @@ version = "0.1.2"
 edition = "2024"
 description = "A wrapper for the CodeRabbit CLI that automatically retries on rate limit errors"
 license = "MIT"
+repository = "https://github.com/smartcrabai/seher-cr"
 
 [dependencies]
 tokio = { version = "1.50.0", features = ["rt", "macros", "process", "time"] }
