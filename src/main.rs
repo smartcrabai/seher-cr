@@ -83,38 +83,50 @@ mod tests {
 
     #[test]
     fn test_parse_minutes_and_seconds() {
-        let duration = parse_rate_limit_wait("Try after 2 minutes and 7 seconds").unwrap();
+        let Some(duration) = parse_rate_limit_wait("Try after 2 minutes and 7 seconds") else {
+            panic!("Expected Some but got None");
+        };
         assert_eq!(duration, Duration::from_secs(2 * 60 + 7));
     }
 
     #[test]
     fn test_parse_minutes_only() {
-        let duration = parse_rate_limit_wait("Try after 3 minutes").unwrap();
+        let Some(duration) = parse_rate_limit_wait("Try after 3 minutes") else {
+            panic!("Expected Some but got None");
+        };
         assert_eq!(duration, Duration::from_secs(3 * 60));
     }
 
     #[test]
     fn test_parse_seconds_only() {
-        let duration = parse_rate_limit_wait("Try after 45 seconds").unwrap();
+        let Some(duration) = parse_rate_limit_wait("Try after 45 seconds") else {
+            panic!("Expected Some but got None");
+        };
         assert_eq!(duration, Duration::from_secs(45));
     }
 
     #[test]
     fn test_parse_in_longer_message() {
         let output = "Rate limit exceeded. Try after 2 minutes and 7 seconds.";
-        let duration = parse_rate_limit_wait(output).unwrap();
+        let Some(duration) = parse_rate_limit_wait(output) else {
+            panic!("Expected Some but got None");
+        };
         assert_eq!(duration, Duration::from_secs(2 * 60 + 7));
     }
 
     #[test]
     fn test_parse_singular_minute() {
-        let duration = parse_rate_limit_wait("Try after 1 minute and 30 seconds").unwrap();
+        let Some(duration) = parse_rate_limit_wait("Try after 1 minute and 30 seconds") else {
+            panic!("Expected Some but got None");
+        };
         assert_eq!(duration, Duration::from_secs(90));
     }
 
     #[test]
     fn test_parse_case_insensitive() {
-        let duration = parse_rate_limit_wait("TRY AFTER 1 MINUTES AND 30 SECONDS").unwrap();
+        let Some(duration) = parse_rate_limit_wait("TRY AFTER 1 MINUTES AND 30 SECONDS") else {
+            panic!("Expected Some but got None");
+        };
         assert_eq!(duration, Duration::from_secs(90));
     }
 
@@ -130,7 +142,9 @@ mod tests {
 
     #[test]
     fn test_parse_zero_minutes_nonzero_seconds() {
-        let duration = parse_rate_limit_wait("Try after 0 minutes and 5 seconds").unwrap();
+        let Some(duration) = parse_rate_limit_wait("Try after 0 minutes and 5 seconds") else {
+            panic!("Expected Some but got None");
+        };
         assert_eq!(duration, Duration::from_secs(5));
     }
 
@@ -142,7 +156,9 @@ mod tests {
     #[test]
     fn test_parse_multiline_output() {
         let output = "Reviewing...\nError: Try after 1 minutes and 20 seconds\nPlease try again.";
-        let duration = parse_rate_limit_wait(output).unwrap();
+        let Some(duration) = parse_rate_limit_wait(output) else {
+            panic!("Expected Some but got None");
+        };
         assert_eq!(duration, Duration::from_secs(80));
     }
 }
