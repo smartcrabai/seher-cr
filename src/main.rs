@@ -3,8 +3,8 @@ use std::time::Duration;
 use tokio::process::Command;
 use tokio::time::sleep;
 
-/// coderabbit の出力からレートリミットの待機時間を解析する。
-/// "Try after X minutes and Y seconds" のような形式を想定。
+/// Parse the rate-limit wait duration from coderabbit output.
+/// Expects a format like "Try after X minutes and Y seconds".
 fn parse_rate_limit_wait(output: &str) -> Option<Duration> {
     let lower = output.to_lowercase();
     let marker = "try after ";
@@ -14,7 +14,7 @@ fn parse_rate_limit_wait(output: &str) -> Option<Duration> {
     let mut total_seconds = 0u64;
     let mut remaining = rest.trim();
 
-    // minutes の解析
+    // Parse minutes
     if let Some(min_idx) = remaining.find(" minute")
         && let Ok(mins) = remaining[..min_idx].trim().parse::<u64>()
     {
@@ -27,7 +27,7 @@ fn parse_rate_limit_wait(output: &str) -> Option<Duration> {
         }
     }
 
-    // seconds の解析
+    // Parse seconds
     if let Some(sec_idx) = remaining.find(" second")
         && let Ok(secs) = remaining[..sec_idx].trim().parse::<u64>()
     {
