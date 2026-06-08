@@ -94,7 +94,7 @@ mod tests {
         let Some(duration) = parse_rate_limit_wait("Try after 3 minutes") else {
             panic!("Expected Some but got None");
         };
-        assert_eq!(duration, Duration::from_secs(3 * 60));
+        assert_eq!(duration.as_secs(), 3 * 60);
     }
 
     #[test]
