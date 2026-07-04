@@ -4,7 +4,7 @@ edition = "2024"
 license = "MIT"
 name = "seher-cr"
 repository = "https://github.com/smartcrabai/seher-cr"
-version = "0.1.2"
+version = "0.1.3"
 
 [dependencies]
 tokio = { version = "1.50.0", features = ["rt", "macros", "process", "time"] }
